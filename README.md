@@ -6,8 +6,10 @@ dentro un virtualenv
 
 ```
 $ virtualenv .env && . .env/bin/activate
-$ pip install nodeenv
-$ nodeenv -p
-$ npm install markdown-to-slides
-$ markdown-to-slides --watch talk.md -o index.html
+(env) $ pip install nodeenv
+(env) $ nodeenv -p
+(env) $ npm install markdown-to-slides
+(env) $ make
 ```
+
+La presentazione sarà in ``staging_dir/index.html``.
