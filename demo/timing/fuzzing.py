@@ -1,11 +1,21 @@
 '''
+Script che emette una serie di payload verso il microcontroller
+e salva in tracce separate il risultato.
+
+Il setup consiste in un computer collegato con una sonda
+al led e contemporaneamente con la seriale allo sketch.
+
+
+NOTA
+----
+
 Se sei in dubbio che si pianti il computer per troppa memoria
 usata, puoi configurare ulimit per poco meno di 5GB di utilizzo
 di memoria virtuale.
 
  $ ulimit -Sv 5000000
 
-Usare una list con append() al posto di extend() altrimenti
+In particolare usare una list con append() al posto di extend() altrimenti
 goes banana con la memoria.
 '''
 # https://pythonhosted.org/RPIO/rpio_py.html
@@ -13,46 +23,28 @@ goes banana con la memoria.
 #matplotlib.use('wxAgg')
 
 from PyHT6022.LibUsbScope import Oscilloscope
-#import pylab
+from threading import Thread
 import sys
 import string
 import time
 from struct import pack
-from collections import deque
 
 from pwnlib.tubes.serialtube import serialtube
 from pwn import log as logger
 
-data = []
+g_data = {}
+g_payload = None
 
-sample_rate_index = 30 # 48MS/s
-voltage_range = 0x01     # 5V
+sample_rate_index = 30 # 30MS/s
+voltage_range = 0x01   # 5V
 numchannels = 1
-blocksize = 6*1024      # should be divisible by 6*1024
+blocksize = 6*1024     # should be divisible by 6*1024
 
 
-def usage(progname):
-    print >> sys.stderr, "usage: %s [--no-serial | --no-scope]" % progname
-    sys.exit(1)
-
-def serial_stuffs():
+def serial_initialize():
     s = serialtube('/dev/ttyUSB0', 9600)
 
-    words = [ # first, all 1s
-        '\x7F',
-        '\x7F\x7F',
-        '\x7F\x7F\x7f',
-        '~', # then, we want one bit flipped
-        '~~',
-        '~~~',
-    ] + list(string.lowercase)
-
-    for word in words:
-        s.write(word)
-
-        print s.read()
-
-        time.sleep(1.0)
+    return s
 
 def setup_scope():
     scope = Oscilloscope()
@@ -79,15 +71,22 @@ def setup_scope():
     return scope
 
 def setup_async_read(s):
+    def _data_extend(ch1, ch2):
+        if not g_data.has_key(g_payload):
+            g_data[g_payload] = []
+
+        g_data[g_payload].append(ch1)
+
     return s.read_async(
-        lambda ch1_data, ch2_data: data.append(ch1_data),
+        _data_extend,
         blocksize,
         outstanding_transfers=10,
         raw=True) # w/o raw async doesn't work
 
-def export_to_wav(filepath, total, samplerate):
+def export_to_wav(filepath, samples, samplerate):
     # we divide by 100 because otherwise audacity lets us not zoom into it
     samplerate = samplerate * 1000 * 10
+    total = sum(len(block) for block in samples)
     with logger.progress('writing RIFF file %s' % filepath) as progress:
         with open(filepath, "wb") as wf:
             wf.write(b"RIFF")
@@ -99,68 +98,57 @@ def export_to_wav(filepath, total, samplerate):
             wf.write(b"\x01\x00\x08\x00")
             wf.write(b"data")
             wf.write(pack("<L", total))
-            for block in data:
+            for block in samples:
                 wf.write(block)
 
-def humanize_data(s):
-    #timing_data, _ = s.convert_sampling_rate_to_measurement_times(len(data), sample_rate_index)
+g_running = True
 
-    filepath = '/tmp/scopevis.dat'
-    with logger.progress('saving data into %s' % filepath) as progress:
-        with open(filepath, 'wb') as ouf:
-            size = len(data)
-            for index in xrange(size):
-                if index % 1000 == 0:
-                    progress.status('writing block %d of %d' % (index, size))
-
-                d = data[index]
-                #voltage_data = s.scale_read_data(d, voltage_range)
-                ouf.write(d)
-
-    logger.info('plotting like a boss')
-    #from bokeh.plotting import figure, output_file, show
-
-    #output_file("line.html")
-
-    #p = figure(plot_width=400, plot_height=400)
-
-    # add a line renderer
-    #p.line(timing_data, voltage_data, line_width=2)
-
-    #show(p)
-
-    import iteritools
-
-    pylab.title('Scope Visualization Example')
-    pylab.plot(iteritools.chain.from_iterables(data), color='#009900', label='Raw Trace')
-    pylab.xlabel('Time (s)')
-    pylab.ylabel('Voltage (V)')
-    pylab.grid()
-    pylab.legend(loc='best')
-    pylab.xticks(rotation=30)
-    pylab.tight_layout()
-    pylab.show()
-
-def check():
-    import itertools
-    print set(itertools.chain.from_iterable(data))
+def scope_thread_polling(scope):
+    # la sonda la facciamo pollare in un thread a parte
+    # altrimenti non arrivano i dati
+    while g_running:
+        scope.poll()
 
 
 if __name__ == '__main__':
-    n_seconds = int(sys.argv[1])
     scope = setup_scope()
+
+    serial = serial_initialize()
 
     shutdown_event = setup_async_read(scope)
 
     scope.start_capture()
     start_time = time.time()
-    running = True
+
+    payloads = [
+        'a',
+        'b',
+        'ca',
+        '123456',
+        'antani',
+    ]
+
+
+    logger.info('starting scope polling thread')
+
+    thread = Thread(target=scope_thread_polling, args=(scope,))
+    thread.start()
+
     with logger.progress('capturing data') as progress:
-        while running:
-            scope.poll()
+        for payload in payloads:
+            g_payload = payload
+
             elapsed = time.time() - start_time
-            running = elapsed < n_seconds
-            progress.status('elapsed %d of %d seconds' % (elapsed, n_seconds))
+
+            serial.write(payload)
+            logger.info('serial output: %s' %  serial.read(timeout=2))
+
+            time.sleep(1.5)
+
+            progress.status('[%s] elapsed %d seconds' % (payload, elapsed, ))
+        else:
+            g_running = False
+            thread.join()
 
     logger.info("Stopping new transfers.")
     shutdown_event.set()
@@ -169,9 +157,9 @@ if __name__ == '__main__':
     scope.stop_capture()
     scope.close_handle()
 
-    logger.info('# data blocks: %d' % len(data))
+    logger.info('# data blocks: %d' % len(g_data))
     #humanize_data(scope)
     #check()
-    total = sum(len(block) for block in data)
-    logger.info('total: %d' % total)
-    export_to_wav('/tmp/scope.wav', total, sample_rate_index)
+
+    for payload in g_data.keys():
+        export_to_wav('/tmp/scope.%s.wav' % payload, g_data[payload], sample_rate_index)
