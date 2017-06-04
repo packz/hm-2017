@@ -511,7 +511,8 @@ può dare indicazioni riguardanti le operazioni svolte.
 Abbiamo un arduino con una seriale che chiede una password, inside usa
 una strcmp() come si può vedere dal disassemblato:
 
-    $ avr-objdump -d demo/timing/build-uno/timing.elf | sed -n '/<strcmp>:/,/^$/p'
+    $ avr-objdump -d demo/timing/build-uno/timing.elf | \
+        sed -n '/<strcmp>:/,/^$/p'
     00000856 <strcmp>:
      856:   fb 01           movw    r30, r22
      858:   dc 01           movw    r26, r24
@@ -523,8 +524,14 @@ una strcmp() come si può vedere dal disassemblato:
      864:   99 0b           sbc     r25, r25
      866:   08 95           ret
 
+**r1 è usato come registro fisso che continene zero!** ([source](https://gcc.gnu.org/wiki/avr-gcc#Fixed_Registers))
+
 L'idea è che un 1MHz vuol dire 1us, ci sono 4 istruzioni in più che
 vengono eseguite per qui 4*cicli clock -> 4us.
+
+ - [Instruction set summary](extras/Instruction%20Set%20Summary.pdf)
+
+---
 
 ##### Power analysis attack (demo)
 
@@ -540,9 +547,17 @@ L'input da parte dell'utente è una possibilità per sfruttare una potenziale vu
 in un circuito elettronico l'input esterno può essere rappresentato dall'alimentazione,
 dal clock.
 
+
+ - https://www.blackhat.com/docs/eu-16/materials/eu-16-Timmers-Bypassing-Secure-Boot-Using-Fault-Injection.pdf (pg 82)
+ - [estratto video di scanlime](video/scanlime-extract.mp4)
+
 ---
 
 ##### Reversing
+
+ - [CSCI 4974 / 6974 Hardware Reverse Engineering](http://security.cs.rpi.edu/courses/hwre-spring2014/)
+ - [The Layman's Guide to IC Reverse Engineering](http://siliconzoo.org/tutorial.html)
+ - [NMOS IC Reverse Engineering](https://www.wdj-consulting.com/blog/nmos-sample.html)
 
 ---
 
@@ -554,4 +569,7 @@ dal clock.
  - https://www.youtube.com/user/colinpoflynn/
  - https://www.youtube.com/user/micahjd/
  - https://wiki.newae.com/ e https://app.assembla.com/spaces/chipwhisperer/git/source/master
+ - http://www.electronicaestudio.com/docs/Hantek6022BE_Manual.pdf
+ - https://en.wikipedia.org/wiki/Unlooper
+ - https://rheingoldheavy.com/category/education/fundamentals/arduino-from-scratch-series/
 
