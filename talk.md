@@ -625,3 +625,8 @@ dal clock.
  - https://en.wikipedia.org/wiki/Unlooper
  - https://rheingoldheavy.com/category/education/fundamentals/arduino-from-scratch-series/
 
+---
+
+### Extra
+
+.center[![](images/Atmega.png)]
