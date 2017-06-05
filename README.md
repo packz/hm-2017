@@ -8,7 +8,7 @@ dentro un virtualenv
 $ virtualenv .env && . .env/bin/activate
 (env) $ pip install nodeenv
 (env) $ nodeenv -p
-(env) $ npm install markdown-to-slides
+(env) $ npm install -g markdown-to-slides
 (env) $ make
 ```
 
