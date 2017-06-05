@@ -1,7 +1,19 @@
+/*
+ * avrdude: safemode: Fuses OK (E:FD, H:DE, L:62)
+ */
+#include <util/delay.h>
+
 #define PASSWORD "antani"
+#define PASS_LENGTH sizeof(PASSWORD)
+
 
 void setup() {
     Serial.begin(9600);
+
+    pinMode(A5, OUTPUT);
+        digitalWrite(A5, HIGH);
+        _delay_ms(1000);
+        digitalWrite(A5, LOW);
 
     Serial.println("Plis visit our country!!1!");
     Serial.println("voulez vous inserire le PIN?");
@@ -9,19 +21,28 @@ void setup() {
 
 static char buffer[strlen(PASSWORD) + 1];
 
+void check_password(char* buffer) {
+        if (strcmp(buffer, PASSWORD) == 0) {
+            Serial.println(" === Woo Woo ===");
+        }
+}
+
 void loop() {
 
     if (Serial.available() > 0) {
-        int count = Serial.readBytesUntil('\n', buffer, sizeof(PASSWORD));
+        int count = Serial.readBytesUntil('\n', buffer, PASS_LENGTH);
 
         buffer[count] = '\0';
 
         Serial.write("> ");
-        Serial.write(buffer, strlen(PASSWORD));
+        Serial.write(buffer, strlen(buffer));
         Serial.println();
 
-        if (strcmp(buffer, PASSWORD) == 0) {
-            Serial.println(" === Woo Woo ===");
-        }
+        digitalWrite(A5, HIGH);
+        check_password(buffer);
+        //_delay_ms(1000);
+        digitalWrite(A5, LOW);
+    } else {
+        _delay_ms(10);
     }
 }
