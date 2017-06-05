@@ -8,26 +8,29 @@ class: center, middle
 
 ---
 
+#### Fisica e Storia
+
+
+
+---
+
 class: center, middle
 ### Basic electronics
 
 ---
 
-#### Storia
-
----
 
 #### Corrente, voltaggio e potenza
 
-Le due grandezze fondamentali per un circuito sono **Ampere** e **Volt**.
+Ci sono due grandezze fondamentali
 
-Gli ampere misurano il numero di cariche (elettroni) in unità di tempo che passano
+ - **Ampere:** numero di cariche (elettroni) in unità di tempo che passano
 in una sezione di un conduttore.
+ - **Volt:** è l'energia necessaria a spostare una carica fra i capi di un filo
 
-Il voltaggio (che nella pratica è sempre una differenza fra due valori, per questo
-gli strumenti hanno due sonde) è l'energia necessaria a spostare una carica.
-
-Proprio perché si necessitano due valori, uno viene chiamato **terra** (**ground**) e
+Nella pratica il voltaggio è sempre una differenza fra due valori (per questo
+gli strumenti hanno due sonde); proprio perché si necessitano due valori,
+uno viene chiamato **terra** (**ground**) e
 indicato come GND, non tutti i GND nascono uguali! se due circuiti devono comunicare
 **i loro segnali di terra devono essere collegati**.
 
@@ -83,28 +86,39 @@ che ha la resistenza che aumenta con la temperatura.
 
 ##### Pull-up e pull-down
 
+.center[![](images/pull-up.png)]
 ---
 
 #### Condensatore
 
-Idealmente è costituito da due piastre parallele con del dielettrico in mezzo. ![](images/capacitor.png)![](images/capacitor-polarized.png)
-
+Idealmente è costituito da due piastre parallele con del dielettrico in mezzo.
+.center[![](images/capacitor.png)![](images/capacitor-polarized.png)]
 Applicando un voltaggio ai capi si ottiene l'immagazzinamento di una carica (e di energia).
+
+Notare come una volta carichi non facciano più passare corrente, quindi in DC
+sono come un circuito aperto per quel ramo; invece in AC si comportano
+come un corto circuito.
 
 La sua _formula_ è `\(I=C{dV\over dt}\)`: in pratica la corrente che passa è data dalla
 variazione in unità di tempo del voltaggio ai suoi estremi.
 
 A parte l'utilizzo nei circuiti AC, essi vengono utilizzati come
 
- - decoupling
- - bypass
+ - **:**
+ - **Decoupling/Bypass:** fornisce una riserva di energia per carichi di energia improvvisa (posti di solito tra VCC e GND ;))
+
+---
+
+#### Condensatori + resistenza = filtri
+
+![](images/low-pass-filter.png) ![](images/high-pass-filter.png)
 
 ---
 
 #### Induttanza
 
 Questo è l'elemento più particolare di quelli lineari: immagazzina energia nel campo magnetico.
-![](images/inductor.png)
+.center[![](images/inductor.png)]
 
 La sua formula è `\(V = L{dI\over dt}\)`: il voltaggio ai suoi estremi è dato dalla
 variazione della corrente che scorre in esso.
@@ -130,6 +144,10 @@ Ricordatevi che l'energia si deve conservare ;)
 
 ---
 
+#### Induttanza e condensatori = filtri
+
+---
+
 #### Pulsanti e interruttori
 
 ---
@@ -146,7 +164,6 @@ matematico sono:
 Siccome la _parte reale_ è solo resistiva, induttanze e capacitanze
 non consumano energia!
 
-![](images/low-pass-filter.png) ![](images/high-pass-filter.png)
 
 ---
 
@@ -172,7 +189,8 @@ di diverse tipologie
  
 ##### Lineari
 
-Possono solo diminuire il voltaggio originale e sono meno efficienti
+Possono solo diminuire il voltaggio originale e sono meno efficienti: un esempio
+pacco è quello sotto con un semplice diodo
 
 .center[![](images/voltage-regulator-diode.png)]
 
@@ -184,7 +202,7 @@ Possono solo diminuire il voltaggio originale e sono meno efficienti
 
 Si basano sul _trucchetto_ delle induttanza e quindi possono anche aumentare il
 voltaggio originale; sono più efficienti ma rumorosi (il voltaggio contiene delle
-piccole variazioni dovute allo switching)
+piccole variazioni dovute allo switching).
 
 Ce ne sono di due tipologie
 
@@ -335,13 +353,26 @@ class: center, middle
 
 #### Breadboard
 
+.center[![](images/breadboard.jpg)]
+
 ---
 
 #### Piastra millefori
 
+.center[![](images/millefori.pg)]
+
 ---
 
 #### Oscilloscopio
+
+Strumento fondamentale se ci si interessa a circuiti in AC e segnali in generale.
+
+I parametri fondamentali per l'acquisto sono
+
+ - **bandwidth**
+ - **# samples**
+
+![](images/oscilloscopio.jpg)
 
 Attenti ai **ground loop**.
 
@@ -382,8 +413,8 @@ semplice da trovare, da accedere e in molti casi dà accesso ad una shell
 
  - TX
  - RX
- - DTS
- - CTS
+ - DTS (opzionale)
+ - CTS (opzionale)
 
 Su alcuni device non c'è un connettore solo per quello ma è accessibile
 tramite USB (Samsung) o jack audio (Nexus 5).
