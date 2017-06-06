@@ -84,6 +84,8 @@ prendono fuoco! Grazie a questo possono essere usate resistenza a zero ohm come
 fusibili di emergenza. Altrimenti usare un [termistore](https://it.wikipedia.org/wiki/Termistore)
 che ha la resistenza che aumenta con la temperatura.
 
+---
+
 ##### Pull-up e pull-down
 
 .center[![](images/pull-up.png)]
@@ -94,6 +96,8 @@ che ha la resistenza che aumenta con la temperatura.
 Idealmente è costituito da due piastre parallele con del dielettrico in mezzo.
 .center[![](images/capacitor.png)![](images/capacitor-polarized.png)]
 Applicando un voltaggio ai capi si ottiene l'immagazzinamento di una carica (e di energia).
+
+L'unità di misura è il **Farad**.
 
 Notare come una volta carichi non facciano più passare corrente, quindi in DC
 sono come un circuito aperto per quel ramo; invece in AC si comportano
@@ -111,7 +115,16 @@ A parte l'utilizzo nei circuiti AC, essi vengono utilizzati come
 
 #### Condensatori + resistenza = filtri
 
-![](images/low-pass-filter.png) ![](images/high-pass-filter.png)
+Il valore `\(RC\)` ha la dimensione di tempo (cioè secondi).
+
+##### Filtro passa basso
+
+![](images/low-pass-filter.png)![](images/low-pass-filter-diagram.jpg)
+
+
+##### Filtro passa alto
+
+![](images/high-pass-filter.png)![](images/hipass-filter-diagram.jpg)
 
 ---
 
@@ -119,6 +132,8 @@ A parte l'utilizzo nei circuiti AC, essi vengono utilizzati come
 
 Questo è l'elemento più particolare di quelli lineari: immagazzina energia nel campo magnetico.
 .center[![](images/inductor.png)]
+
+La sua unità di misura è **Henry**.
 
 La sua formula è `\(V = L{dI\over dt}\)`: il voltaggio ai suoi estremi è dato dalla
 variazione della corrente che scorre in esso.
@@ -146,9 +161,15 @@ Ricordatevi che l'energia si deve conservare ;)
 
 #### Induttanza e condensatori = filtri
 
----
+Un filtro molto usato nei circuiti è il **tank LC**: è un passbanda
+(la resistenza è aggiunta per evitare di far andare a `\(\infty\)`
+il diagramma).
 
-#### Pulsanti e interruttori
+![](images/lc-filter.jpg)
+
+![](images/lc-filter-diagram.jpg)
+
+Qui `\(\sqrt{LC}\)` ha la dimensione di tempo.
 
 ---
 
