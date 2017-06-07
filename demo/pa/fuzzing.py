@@ -107,28 +107,30 @@ def scope_thread_polling(scope):
 
 
 if __name__ == '__main__':
-    #scope = setup_scope()
+    scope = setup_scope()
     port = sys.argv[1]
     serial = serial_initialize(port)
 
-    #shutdown_event = setup_async_read(scope)
+    shutdown_event = setup_async_read(scope)
 
-    #scope.start_capture()
+    scope.start_capture()
     start_time = time.time()
 
     payloads = [
-        '\x00'*6,
-        'b',
-        'ca',
+        #'\x00'*6,
+        #'b',
+        #'ca',
         '123456',
+        'mazinga',
+        'Mazinga',
         'antani',
     ]
 
 
     logger.info('starting scope polling thread')
 
-    #thread = Thread(target=scope_thread_polling, args=(scope,))
-    #thread.start()
+    thread = Thread(target=scope_thread_polling, args=(scope,))
+    thread.start()
 
     with logger.progress('capturing data') as progress:
         for payload in payloads:
@@ -144,9 +146,7 @@ if __name__ == '__main__':
             progress.status('[%s] elapsed %d seconds' % (payload, elapsed, ))
         else:
             g_running = False
-            #thread.join()
-
-    sys.exit(0)
+            thread.join()
 
     logger.info("Stopping new transfers.")
     shutdown_event.set()
@@ -156,8 +156,6 @@ if __name__ == '__main__':
     scope.close_handle()
 
     logger.info('# data blocks: %d' % len(g_data))
-    #humanize_data(scope)
-    #check()
 
     for payload in g_data.keys():
         export_to_wav('/tmp/scope.%s.wav' % payload, g_data[payload], sample_rate_index)

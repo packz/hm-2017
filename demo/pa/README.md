@@ -12,6 +12,10 @@ in ``CMD`` mode per vedere se il baud rate è corretto.
 
 Uscire dal ``CMD`` mode e dare l'alimentazione al target.
 
+Per testare che la seriale funzioni
+
+    $ sudo .virtualenv/bin/python -m serial.tools.miniterm /dev/rfcomm1 9600
+
 ## Bluetooth
 
 Siccome collegando la seriale normalmente si avrebbe
