@@ -43,7 +43,7 @@ void loop() {
         int count = Serial.readBytesUntil('\n', buffer, strlen(key));
 
         if (count < 6) {
-            Serial.println("you need to pass 6 charaters!");
+            Serial.println("you need to pass 6 characters!");
         } else {
             buffer[count] = '\0';
 

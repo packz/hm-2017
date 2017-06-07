@@ -26,3 +26,10 @@ e poi riavviare con ``R,1``.
 SU,9600
 R,1
 ```
+
+### Impostare no auth
+
+```
+SA,0
+R,1
+```

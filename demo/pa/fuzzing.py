@@ -137,7 +137,7 @@ if __name__ == '__main__':
             elapsed = time.time() - start_time
 
             serial.write(payload)
-            logger.info('serial output: %s' %  serial.read(timeout=2))
+            logger.info('serial output: %s' %  repr(serial.read(timeout=2)))
 
             time.sleep(1.5)
 
