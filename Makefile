@@ -1,6 +1,6 @@
 
 OUTPUT_DIR=staging_dir
-RFCOMM_DEV=rfcomm0
+RFCOMM_DEV := rfcomm0
 
 build: $(OUTPUT_DIR)
 	#hash markdown-to-slides
