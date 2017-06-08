@@ -2,8 +2,9 @@
 Script che emette una serie di payload verso il microcontroller
 e salva in tracce separate il risultato.
 
-Il setup consiste in un computer collegato con una sonda
-al led e contemporaneamente con la seriale allo sketch.
+Il setup consiste nella sonda con GND a valle di una resistenza;
+il collegamento con la seriale deve passare attraverso
+un ponte wireless per evitare un ground loop.
 
 
 NOTA
@@ -19,7 +20,9 @@ In particolare usare una list con append() al posto di extend() altrimenti
 goes banana con la memoria.
 '''
 from PyHT6022.LibUsbScope import Oscilloscope
+import matplotlib.pyplot as plt
 from threading import Thread
+import itertools
 import sys
 import string
 import time
@@ -30,6 +33,12 @@ from pwn import log as logger
 
 g_data = {}
 g_payload = None
+N_SAMPLES = 20000000
+
+# questo lo uso per avere un oggetto
+# in cui metterci il noise
+class NOISE:
+    pass
 
 sample_rate_index = 30 # 30MS/s
 voltage_range = 0x01   # 5V
@@ -83,7 +92,7 @@ def export_to_wav(filepath, samples, samplerate):
     # we divide by 100 because otherwise audacity lets us not zoom into it
     samplerate = samplerate * 1000 * 10
     total = sum(len(block) for block in samples)
-    with logger.progress('writing RIFF file %s' % filepath) as progress:
+    with logger.progress('writing RIFF file %s with sample rate of %d' % (filepath, samplerate)) as progress:
         with open(filepath, "wb") as wf:
             wf.write(b"RIFF")
             wf.write(pack("<L", 44 + total - 8))
@@ -106,6 +115,21 @@ def scope_thread_polling(scope):
         scope.poll()
 
 
+def noise(t):
+    global g_payload
+
+    g_payload = NOISE
+
+    running = True
+    start_time = time.time()
+    with logger.progress('capturing data for noise') as progress:
+        while running:
+            elapsed = time.time() - start_time
+            progress.status('elapsed %d of %d seconds' % (elapsed, t))
+            running = elapsed < t
+
+    g_payload = None
+
 if __name__ == '__main__':
     scope = setup_scope()
     port = sys.argv[1]
@@ -114,6 +138,14 @@ if __name__ == '__main__':
     shutdown_event = setup_async_read(scope)
 
     scope.start_capture()
+
+    logger.info('starting scope polling thread')
+
+    thread = Thread(target=scope_thread_polling, args=(scope,))
+    thread.start()
+
+    noise(5)
+
     start_time = time.time()
 
     payloads = [
@@ -121,29 +153,23 @@ if __name__ == '__main__':
         #'b',
         #'ca',
         '123456',
-        'mazinga',
-        'Mazinga',
-        'antani',
+        #'mazing',
+        #'Mazing',
+        #'antani',
     ]
-
-
-    logger.info('starting scope polling thread')
-
-    thread = Thread(target=scope_thread_polling, args=(scope,))
-    thread.start()
 
     with logger.progress('capturing data') as progress:
         for payload in payloads:
-            g_payload = payload
+            for index in xrange(10):
+                g_payload = '%s.%d'  % (payload, index)
 
-            elapsed = time.time() - start_time
+                serial.write(payload)
+                logger.info('serial output: %s' %  repr(serial.read(timeout=2)))
 
-            serial.write(payload)
-            logger.info('serial output: %s' %  repr(serial.read(timeout=2)))
+                time.sleep(.5)
 
-            time.sleep(1.5)
-
-            progress.status('[%s] elapsed %d seconds' % (payload, elapsed, ))
+                elapsed = time.time() - start_time
+                progress.status('[%s] elapsed %d seconds' % (payload, elapsed, ))
         else:
             g_running = False
             thread.join()
@@ -159,3 +185,13 @@ if __name__ == '__main__':
 
     for payload in g_data.keys():
         export_to_wav('/tmp/scope.%s.wav' % payload, g_data[payload], sample_rate_index)
+
+    plt.ion()
+
+    for index in xrange(2):
+        d = list(itertools.chain.from_iterable(g_data['123456.%d' % index]))[:N_SAMPLES]
+        timing_data, _ = scope.convert_sampling_rate_to_measurement_times(len(d), sample_rate_index)
+        plt.plot(timing_data, d)
+
+    while True:
+        plt.pause(0.5)
