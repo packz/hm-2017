@@ -10,6 +10,18 @@ class: center, middle
 
 #### Fisica e Storia
 
+In pratica la corrente elettrica è costituita da un flusso di elettroni
+che passa attraverso un materiale; ci sono materiali che hanno
+questi elettroni liberamente mobili all'interno della loro nuvola
+e altri che invece sono _ben attaccati_ o _non hanno dove andare_.
+
+Ogni carica in movimento genera un **campo magnetico** (i magneti non
+sono altro che materiali aventi gli atomi solidificati con un momento
+magnetico totale coerente fra di loro).
+
+Una variazione di campo magnetico crea un campo elettrico: opportunamente
+prodotto un campo elettrico che crea un campo magnetico che crea un campo
+elettrico crea un'**onda elettromagnetica**.
 
 
 ---
@@ -357,20 +369,6 @@ class: center, middle
 
 ---
 
-#### Saldatore
-
-.center[![](images/solder-wick.jpg)![](images/solder-wire.jpg)![](images/soldering-iron.jpg)]
-[Video](video/solder-wick.mp4)
-
----
-
-#### Stagno
-
-**Lead free**, **Lead solder** and **Flux-core solder**
-
-[RoHS](https://en.wikipedia.org/wiki/Restriction_of_Hazardous_Substances_Directive)
-
----
 
 #### Breadboard
 
@@ -384,6 +382,27 @@ class: center, middle
 
 ---
 
+#### Saldatore
+
+Per costruire circuiti pensati per _sopravvivere_ si usano di solito
+il saldatore e lo stagno: in pratica si porta lo stagno alla liquefazione
+per usarlo come materiale di connessione fra la componente e il filo (o
+l'oggetto che si vuole connettere).
+
+.center[![](images/soldering-iron.jpg)![](images/solder-wire.jpg)![](images/solder-wick.jpg)]
+
+Lo stagno può contenere piombo (**Lead solder**), non contenerlo (**Lead free**),
+oppure avere una componente di flussante (**Flux-core solder**).
+
+Il flussante è utile per diminuire l'ossidazione dello stagno e
+aumentare la fluidità mentre si salda.
+
+[RoHS](https://en.wikipedia.org/wiki/Restriction_of_Hazardous_Substances_Directive)
+[Video](video/solder-wick.mp4)
+[Collin's Lab: Soldering](https://www.youtube.com/watch?v=QKbJxytERvg)
+[Collin's Lab - Surface Mount Soldering](https://www.youtube.com/watch?v=QzoPxvIM2qE)
+
+---
 #### Oscilloscopio
 
 Strumento fondamentale se ci si interessa a circuiti in AC e segnali in generale.
@@ -437,17 +456,41 @@ semplice da trovare, da accedere e in molti casi dà accesso ad una shell
  - DTS (opzionale)
  - CTS (opzionale)
 
-Su alcuni device non c'è un connettore solo per quello ma è accessibile
-tramite USB (Samsung) o jack audio (Nexus 5).
+---
+
+#### Uart bis
+
+##### Nexus 5
+
+La seriale è accessibile dal jack audio (TSSR), i segnali sono (dalla punta)
+
+ - TX  (giallo)
+ - RX  (arancione)
+ - GND (nero)
+ - MIC (rosso)
+
+quando MIC riceve 3V3 si attiva la console del kernel (mettere una resistenza di 100 Ohm 
+fra MIC e 3V3, just in case).
+
+ - [A better audio jack console cable for Google Nexus devices](http://www.pabr.org/consolejack/consolejack.en.html)
 
 ---
 
+#### Uart tris
 
-#### I2C
+##### Samsung Galaxy S
 
----
+Nel caso di questi device il micro USB può essere usato per accedere alla seriale as well
 
-#### SPI
+ - D- --> TX
+ - D+ --> RX
+ - ID --> resistenza con GND (150 kOhm)
+ - GND
+ - VCC
+
+[Multiplexed Wired Attack Surfaces](https://greatscottgadgets.com/infiltrate2013/)
+[](https://forum.xda-developers.com/showthread.php?t=1901376)
+[](https://forum.xda-developers.com/showthread.php?t=820275)
 
 ---
 
@@ -587,8 +630,13 @@ vengono eseguite per qui 4*cicli clock -> 4us.
 
 ##### Power analysis attack (demo)
 
+Per la natura dei transistor succede che la transazione di valore
+nei registri (ma non solo) causa picchi di consumo che possono essere
+misurati e analizzati
+
 **ATTENTI AI GROUND LOOP**
 
+ - [Power-Based Side-Channel Attack for AES Key Extraction on the ATMega328 Microcontroller](https://skoppula.github.io/pdfs/sidechannel-report.pdf)
  - [Extracting the Private Key from a TREZOR](http://johoe.mooo.com/trezor-power-analysis/)
 
 ---
