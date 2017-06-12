@@ -8,24 +8,6 @@ class: center, middle
 
 ---
 
-#### Fisica e Storia
-
-In pratica la corrente elettrica è costituita da un flusso di elettroni
-che passa attraverso un materiale; ci sono materiali che hanno
-questi elettroni liberamente mobili all'interno della loro nuvola
-e altri che invece sono _ben attaccati_ o _non hanno dove andare_.
-
-Ogni carica in movimento genera un **campo magnetico** (i magneti non
-sono altro che materiali aventi gli atomi solidificati con un momento
-magnetico totale coerente fra di loro).
-
-Una variazione di campo magnetico crea un campo elettrico: opportunamente
-prodotto un campo elettrico che crea un campo magnetico che crea un campo
-elettrico crea un'**onda elettromagnetica**.
-
-
----
-
 class: center, middle
 ### Basic electronics
 
@@ -61,21 +43,20 @@ La potenza misurata in **Watt** invece è data da `\(P = IV\)`.
 
 #### Segnale
 
-I decibel
-`\(dB = 20\log_{10}{A_1\over A_2}\)`
+In particolare un voltaggio che cambia con il tempo in una _maniera
+particolare_ è chiamato **segnale**.
 
----
+Il segnale _più puro_ è un'onda sinusoidale la cui formula è `\(V = A\,\sin\left(2\pi f t + \phi\right)\)`;
+ogni segnale può essere scomposto in una somma di queste onde (per chi capisce di matematica
+è la **trasformata di fourier**). Un'onda è descritta dalla sua ampiezza e fase.
 
-#### Batteria
+.center[![](images/sine.gif)]
 
- - How to Make a Coin Battery ([video](https://www.youtube.com/watch?v=vIHfUJu3aKo))
+Per avere un confronto fra ampiezze di segnali si usano i **decibel** `\(dB = 10 \log_{10}{P_1\over P_2} = 20\log_{10}{A_1\over A_2}\)`.
+valori importanti da tenere a mente: a `\(3 dB\)` la potenza è dimezzata (notare i grafici dei filtri più
+avanti))
 
----
-
-#### Cavi e connettori
-
-Figata i pogo pin
-SMA, BNC
+Altri tipi di onde sono **quadra**, **triangolare**, **dente di sega** etc...
 
 ---
 
@@ -96,11 +77,17 @@ prendono fuoco! Grazie a questo possono essere usate resistenza a zero ohm come
 fusibili di emergenza. Altrimenti usare un [termistore](https://it.wikipedia.org/wiki/Termistore)
 che ha la resistenza che aumenta con la temperatura.
 
+.center[![](images/resistor.jpg)]
+
 ---
 
-##### Pull-up e pull-down
+##### Pull-up/pull-down e voltage divider
 
-.center[![](images/pull-up.png)]
+.center[![](images/pull-up.png)![](images/voltage-divider.png)]
+
+Per il voltage divider la formula del voltaggio nel punto centrale è data da
+`\(V_{out} = {R_b\over R_a + R_b}\)VCC`; tenere presente che se l'uscita è
+collegata ad un carico il voltaggio non rimane a quel valore.
 ---
 
 #### Condensatore
@@ -118,10 +105,9 @@ come un corto circuito.
 La sua _formula_ è `\(I=C{dV\over dt}\)`: in pratica la corrente che passa è data dalla
 variazione in unità di tempo del voltaggio ai suoi estremi.
 
-A parte l'utilizzo nei circuiti AC, essi vengono utilizzati come
-
- - **:**
- - **Decoupling/Bypass:** fornisce una riserva di energia per carichi di energia improvvisa (posti di solito tra VCC e GND ;))
+A parte l'utilizzo nei circuiti AC come filtri, essi vengono utilizzati per
+**Decoupling/Bypass:** fornire una riserva di energia per carichi di energia improvvisa
+(posti di solito tra VCC e GND ;))
 
 ---
 
@@ -154,7 +140,9 @@ Ricordarsi che ogni elemento non è solo induttanza, condensatore e resistenza,
 ma contiene un poco di ognuno.
 
 Gli elementi di cui abbiamo parlato fino ad adesso sono elementi **lineari**,
-cioé
+cioé date le risposte di un circuito rispetto a due segnali, sommando
+le risposte si ottiene la risposta del circuito a cui viene sottoposto
+il segnale somma dei segnali iniziali.
 
 ---
 
@@ -163,7 +151,7 @@ cioé
 Una piccola cosa che si può fare con questo elemento è **aumentare** il voltaggio:
 questo circuito genera un voltaggio di uscita doppio rispetto a quello di ingresso!
 
-![](images/2vin.png)
+.center[![](images/2vin.png)]
 
 Seguendo la **volt/second balance rule** si ha `\(<V> = 0 \)` perciò `\((V_O - V_I) + (0 - V_I) = 0\)`.
 
@@ -177,9 +165,9 @@ Un filtro molto usato nei circuiti è il **tank LC**: è un passbanda
 (la resistenza è aggiunta per evitare di far andare a `\(\infty\)`
 il diagramma).
 
-![](images/lc-filter.jpg)
+.center[![](images/lc-filter.jpg)]
 
-![](images/lc-filter-diagram.jpg)
+.center[![](images/lc-filter-diagram.jpg)]
 
 Qui `\(\sqrt{LC}\)` ha la dimensione di tempo.
 
@@ -211,6 +199,9 @@ L'**anodo** è 0.6 Volt più positivo del **catodo**. **forward drop voltage**,
 negli **zener** invece agisce anche in direzione opposta con un determinato
 voltage drop quindi è usato in parti di circuito dove è necessaria una precisa
 differenza di voltaggio.
+
+Nella pratica li si trovano anche nei circuiti induttivi (per esempio motori elettrici)
+per evitare picchi di corrente dovuti ad auto-induzione.
 
 ---
 
@@ -245,20 +236,6 @@ Ce ne sono di due tipologie
 ##### Trasformatori
 
 .center[![](images/transformer.png)]
-
----
-
-#### Motori
-
- - Brushless
- - Stepper
-
-Siccome i motori sono fondamentalmente elementi induttivi, è necessario
-mettere sempre un diodo a cavallo 
-
-.center[![](images/flyback-diode.jpg)]
-
-Per usarli si usano gli **H Bridge**.
 
 ---
 
@@ -303,6 +280,11 @@ di operatori logici
 
 .center[![](images/logic-gates.jpg)]
 
+---
+
+#### LG implementati con transistor
+
+.center[![](images/CMOS.svg)]
 
 ---
 
@@ -313,21 +295,11 @@ Normalmente l'unione di quest porte è detto **combinatorio**:
 .center[![](images/combinatorial.gif)]
 
 In certi casi è necessario avere dei circuiti con _memoria_;
-tali circuiti sono detti **sequenziali**.
+tali circuiti sono detti **sequenziali**. Il core di questi circuiti
+sono i **latch**, circuiti bistabili che permettono di immagazzinare
+singoli bit.
 
 .center[![](images/flip-flop-latch.png)]
-
----
-
-#### Flip-flop
-
-È il nucleo dei circuiti digitali sequenziali; in questi circuiti il valore di output **Q** viene _salvato_
-qualunque valore assume l'input **D**. **Q** viene aggiornato solo ad un ciclo
-di clock con il valore di **Q**.
-
-.center[![](images/flip-flop.png)]
-
- - [What is a flip flop?](https://electronics.stackexchange.com/questions/251642/what-is-a-flip-flop)
 
 ---
 
@@ -347,13 +319,22 @@ In natura il quarto è un materiale piezoelettrico e permette di ottenere clock 
 
 ---
 
-#### Bus
+#### Flip-flop
 
-porcodio
+È il nucleo dei circuiti digitali sequenziali; in questi circuiti il valore di output **Q** viene _salvato_
+qualunque valore assume l'input **D**. **Q** viene aggiornato solo ad un ciclo
+di clock con il valore di **Q**.
+
+.center[![](images/flip-flop.png)]
+.center[![](images/D-flipflop-timing.gif)]
+
+ - [What is a flip flop?](https://electronics.stackexchange.com/questions/251642/what-is-a-flip-flop)
 
 ---
 
 #### Processori
+
+.center[![](images/processore.png)]
 
 ---
 
@@ -394,9 +375,6 @@ l'oggetto che si vuole connettere).
 Lo stagno può contenere piombo (**Lead solder**), non contenerlo (**Lead free**),
 oppure avere una componente di flussante (**Flux-core solder**).
 
-Il flussante è utile per diminuire l'ossidazione dello stagno e
-aumentare la fluidità mentre si salda.
-
 [RoHS](https://en.wikipedia.org/wiki/Restriction_of_Hazardous_Substances_Directive)
 [Video](video/solder-wick.mp4)
 [Collin's Lab: Soldering](https://www.youtube.com/watch?v=QKbJxytERvg)
@@ -414,7 +392,7 @@ I parametri fondamentali per l'acquisto sono
 
 ![](images/oscilloscopio.jpg)
 
-Attenti ai **ground loop**.
+È possibile anche leggere programmaticamente da essi usando il protocollo [USBTMC](https://sigrok.org/wiki/USBTMC).
 
 ---
 
@@ -432,6 +410,7 @@ class: center, middle
 È la cosa più semplice che vi può venire in mente: frequenza fissa e un duty cicle
 variabile.
 
+.center[![](images/pwm.gif)]
 ---
 
 #### UART (seriale)
@@ -547,6 +526,7 @@ Vediamo un esempio pratico: nella immagine sottostante un confronto
 fra un Arduino e la sua versione breadboard
 
 ---
+
 class: center, middle
 ### Hacking
 
@@ -595,9 +575,21 @@ class: center, middle
 
 ##### Side channel
 
-Telescrivente e URSS
- Inoltre la misurazione del consumo di corrente da parte di una componente
-può dare indicazioni riguardanti le operazioni svolte.
+Qualuque dispositivo fisico ha degli _input_ (si pensi al clock,
+all'alimentazione) che non sono
+intensi come canale di comunicazione, ma che per la loro natura fisica
+possono _tradire_ informazioni.
+
+Il primo(?) esempio storico è la [Telescrivente](https://arstechnica.com/security/2015/10/how-soviets-used-ibm-selectric-keyloggers-to-spy-on-us-diplomats/)
+nell'ambasciata americana: nascosta in una sua barra di metallo interna che
+registrava il movimento del meccanismo e inviava all'esterno l'informazione.
+
+Le categorie di questo attacco sono:
+
+ - cache
+ - timing
+ - power analysis
+ - electromagnetic
 
 ---
 
@@ -643,10 +635,17 @@ misurati e analizzati
 
 ##### Fault injection (demo)
 
-L'input da parte dell'utente è una possibilità per sfruttare una potenziale vulnerabilità;
-in un circuito elettronico l'input esterno può essere rappresentato dall'alimentazione,
-dal clock.
+I flip-flop ideali si comportano come descritto precedentemente,
+ma ovviamente nella realtà ci sono dei vincoli da rispettare
+per evitare che si comportino secondo specifica.
 
+In questa demo verrà usato un clock da 1MHz generato autonomamente
+tramite una FPGA che può (per un singolo ciclo) diventare molto
+più breve, risultando nel salto di una istruzione.
+
+.center[![](images/clock-glitched.png)]
+
+Esiste anche il glitching dell'alimentazione!
 
  - https://www.blackhat.com/docs/eu-16/materials/eu-16-Timmers-Bypassing-Secure-Boot-Using-Fault-Injection.pdf (pg 82)
  - [estratto video di scanlime](video/scanlime-extract.mp4)
