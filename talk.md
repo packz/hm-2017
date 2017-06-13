@@ -525,13 +525,6 @@ protocollo se si usa ``D+`` come ``CLK`` e ``D-`` come ``DATA``.
 
 ---
 
-#### Arduino
-
-Vediamo un esempio pratico: nella immagine sottostante un confronto
-fra un Arduino e la sua versione breadboard
-
----
-
 class: center, middle
 ### Hacking
 
@@ -566,10 +559,6 @@ Se siete per un approccio DIY potete usare un CNC oppure potete creare circuiti 
 #### Circuit packages
 
 .center[![](images/circuit-packages.jpg)]
-
----
-
-##### Stencil
 
 ---
 
