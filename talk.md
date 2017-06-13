@@ -385,10 +385,7 @@ oppure avere una componente di flussante (**Flux-core solder**).
 
 Strumento fondamentale se ci si interessa a circuiti in AC e segnali in generale.
 
-I parametri fondamentali per l'acquisto sono
-
- - **bandwidth**
- - **# samples**
+I parametri fondamentali per l'acquisto sono **bandwidth** e **# samples**
 
 ![](images/oscilloscopio.jpg)
 
