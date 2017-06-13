@@ -569,9 +569,9 @@ class: center, middle
 
 ##### Side channel
 
-Qualuque dispositivo fisico ha degli _input_ (si pensi al clock,
-all'alimentazione) che non sono
-intensi come canale di comunicazione, ma che per la loro natura fisica
+Qualuque dispositivo fisico ha degli _input_ che non sono
+intensi come canale di comunicazione (si pensi al clock e
+all'alimentazione), ma che per la loro natura fisica
 possono _tradire_ informazioni.
 
 Il primo(?) esempio storico è la [Telescrivente](https://arstechnica.com/security/2015/10/how-soviets-used-ibm-selectric-keyloggers-to-spy-on-us-diplomats/)
