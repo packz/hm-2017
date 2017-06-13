@@ -405,6 +405,17 @@ Non solo relativo ai logic analyzer, ma esiste il progetto [sigrok](https://www.
 per creare _ Free/Libre/Open-Source signal analysis software suite_.
 ---
 
+#### Bus Pirate
+
+È uno strumento multi uso, ha una documentazione un po'
+confusa ma è quello che uso più spesso.
+
+.center[![](images/bus-pirate.jpg)]
+
+[Home page](http://dangerousprototypes.com/docs/Bus_Pirate)
+
+---
+
 class: center, middle
 ### Protocolli
 
@@ -642,7 +653,8 @@ più breve, risultando nel salto di una istruzione.
 Esiste anche il glitching dell'alimentazione!
 
  - https://www.blackhat.com/docs/eu-16/materials/eu-16-Timmers-Bypassing-Secure-Boot-Using-Fault-Injection.pdf (pg 82)
- - [estratto video di scanlime](video/scanlime-extract.mp4)
+ - [Video di scanlime](https://www.youtube.com/watch?v=TeCQatNcF20) dove estrae il firmware di un table
+  wacom usando il glitching
 
 ---
 
