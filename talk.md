@@ -122,7 +122,7 @@ Il valore `\(RC\)` ha la dimensione di tempo (cioè secondi).
 
 ##### Filtro passa alto
 
-![](images/high-pass-filter.png)![](images/hipass-filter-diagram.jpg)
+![](images/high-pass-filter.png)![](images/high-pass-filter-diagram.jpg)
 
 ---
 
