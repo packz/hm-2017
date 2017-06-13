@@ -28,4 +28,4 @@ per funzionare con l'ATMega
 
 ## Firmware FPGA
 
-Flashare usando [mojo-loader](https://github.com/embmicro/mojo-loader) il file ``fpga_clock.bin``.
+Flashare usando [mojo-loader](https://embeddedmicro.com/tutorials/mojo-software-and-updates/installing-mojo-loader) il file ``fpga_clock.bin``.
