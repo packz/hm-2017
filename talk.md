@@ -395,6 +395,14 @@ I parametri fondamentali per l'acquisto sono **bandwidth** e **# samples**
 
 #### Logic analyzer
 
+Viene utilizzato per _debuggare_ protocolli, il più famoso è della **Saleae**
+che ha anche dei cloni cinesi che costano molto meno che funzionano con lo stesso
+software chiamato [Logic](https://www.saleae.com/downloads).
+
+.center[![](images/saleae-original.jpg)![](images/saleae-china.jpg)]
+
+Non solo relativo ai logic analyzer, ma esiste il progetto [sigrok](https://www.sigrok.org)
+per creare _ Free/Libre/Open-Source signal analysis software suite_.
 ---
 
 class: center, middle
