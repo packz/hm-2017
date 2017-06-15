@@ -6,6 +6,16 @@ Il setup consiste nella sonda con GND a valle di una resistenza;
 il collegamento con la seriale deve passare attraverso
 un ponte wireless per evitare un ground loop.
 
+478000 - 730000 = 250000
+
+240000 - 480000 = 240000
+
+310000 - 550000 ~ 240000
+
+73000 - 315000 ~ 240000
+
+Come noise misuro 8 mV di picco (senza microcontroller alimentato)
+Come noise misuro 100mv di picco (con uC alimentato) frequenza di 1.8MHz + 500kHz
 
 NOTA
 ----
@@ -41,7 +51,7 @@ class NOISE:
     pass
 
 sample_rate_index = 30 # 30MS/s
-voltage_range = 0x01   # 5V
+voltage_range = 0x05   # 500mV
 numchannels = 1
 blocksize = 6*1024     # should be divisible by 6*1024
 
@@ -144,7 +154,7 @@ if __name__ == '__main__':
     thread = Thread(target=scope_thread_polling, args=(scope,))
     thread.start()
 
-    noise(5)
+    #noise(5)
 
     start_time = time.time()
 
@@ -153,8 +163,8 @@ if __name__ == '__main__':
         #'b',
         #'ca',
         '123456',
-        #'mazing',
-        #'Mazing',
+        'mazing',
+        'Mazing',
         #'antani',
     ]
 
@@ -185,6 +195,8 @@ if __name__ == '__main__':
 
     for payload in g_data.keys():
         export_to_wav('/tmp/scope.%s.wav' % payload, g_data[payload], sample_rate_index)
+
+    sys.exit(0)
 
     plt.ion()
 

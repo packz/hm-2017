@@ -1,6 +1,8 @@
 # Hacking hardware
 
-Val di susa
+## Hackmeeting 0x14 @ Val di susa
+
+### packz@autistici.org
 
 ---
 class: center, middle
@@ -336,6 +338,8 @@ di clock con il valore di **Q**.
 
 .center[![](images/processore.png)]
 
+[Building an 8-bit breadboard computer!](https://www.youtube.com/playlist?list=PLowKtXNTBypGqImE405J2565dvjafglHU)
+
 ---
 
 class: center, middle
@@ -410,7 +414,7 @@ per creare _ Free/Libre/Open-Source signal analysis software suite_.
 È uno strumento multi uso, ha una documentazione un po'
 confusa ma è quello che uso più spesso.
 
-.center[![](images/bus-pirate.jpg)]
+.center[![](images/bus-pirate.jpg)![](images/bus-pirate-pin-cable-color.png)]
 
 [Home page](http://dangerousprototypes.com/docs/Bus_Pirate)
 
@@ -443,13 +447,16 @@ Di solito è la prima cosa che uno controlla su un device perché è molto
 semplice da trovare, da accedere e in molti casi dà accesso ad una shell
 (anche con privilegi).
 
+Per connettersi a dispositivi con la seriale di usano cavi **FTDI** che
+permettono l'apertura di una seriale USB.
+
 
 ##### Segnali
 
  - TX
  - RX
- - DTS (opzionale)
- - CTS (opzionale)
+ - RTS (opzionale) Request To Send
+ - CTS (opzionale) Clear To Send
 
 ---
 
@@ -513,6 +520,40 @@ Il programma standard per interfacciarsi con questo protocollo è [OpenOCD](http
  - [Locating JTAG pins automatically](http://elinux.org/images/d/d6/Jtag.pdf)
  - [The JTAG Interface: AN ATTACKER’S PERSPECTIVE](https://optivstorage.blob.core.windows.net/web/file/55e86eae3f04450d9bafcbb3a94559ca/JTAG.Whitepaper.pdf)
 
+---
+
+#### DSL-302T
+
+Questo router ha sia un connettore per la porte seriale (JP2) che un connettore
+per la porta JTAG (JP1) con peraltro la numerazione dei pin errata. Questa porta
+è una porta EJTAG, quindi ricordarsi di mettere un pull-up fra nTRST e VRef.
+
+```
+nTRST  1  2 GND
+TDI    3  4 GND
+TDO    5  6 GND
+TMS    7  8 GND
+TCK    9 10 GND
+nSRST 11 12 -key
+DINT  13 14 VCC
+```
+
+##### OpenOCD
+
+```
+> targets
+> halt
+> step
+> reg
+> mdb <address> <count>
+> flash list
+```
+
+puoi anche usare gdb-multiarch
+
+```
+(gdb) target remote localhost:1234
+```
 ---
 
 #### PS/2
