@@ -593,7 +593,7 @@ I circuiti stampati che vedete nelle apparecchiature elettroniche
 sono dette PCB ed esistono programmi che permettono di progettarle
 (dei CAD)
 
- - Eagle proprietario della Autodesk, lo standard de facto
+ - Eagle proprietario della Autodesk, lo standard de facto ([qui](ftp://ftp.cadsoft.de/eagle/program/7.7/) download vecchie versioni)
  - KiCAD open source sviluppato al CERN
 
 Generalmente il design viene inviato ad una
