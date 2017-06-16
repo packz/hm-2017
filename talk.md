@@ -562,18 +562,18 @@ Protocollo usato nelle vecchie tastiere e mouse.
 
 ![](images/ps2-connector.png)
 
- 1. ``DATA``
- 2. ``NC``
- 3. ``GND``
- 4. ``VCC``
- 5. ``CLK``
- 6. ``NC``
+ 1. DATA
+ 2. NC
+ 3. GND
+ 4. VCC
+ 5. CLK
+ 6. NC
 
 Consiste di 11 bit: 1 start bit low, 8 data bit, 1 parity bit and finally stop bit always high.
-``DATA`` deve venire letta al falling edge di ``CLK``.
+DATA deve venire letta al falling edge di CLK.
 
-Funny enough se uno prende una tastiera ``USB``, essa funziona con questo 
-protocollo se si usa ``D+`` come ``CLK`` e ``D-`` come ``DATA``.
+Funny enough se uno prende una tastiera USB, essa funziona con questo 
+protocollo se si usa D+ come CLK e D- come DATA.
 
 ---
 
@@ -670,10 +670,21 @@ vengono eseguite per qui 4*cicli clock -> 4us.
 
 Per la natura dei transistor succede che la transazione di valore
 nei registri (ma non solo) causa picchi di consumo che possono essere
-misurati e analizzati
+misurati e analizzati.
 
-**ATTENTI AI GROUND LOOP**
+Per misurare la corrente consumata dal dispositivo si può misurare
+la caduta di potenziale ai capi di una resistenza di pochi Ohm (un centinaio)
 
+.center[**ATTENTI AI GROUND LOOP**]
+
+Dopo aver collezionato le tracce del consumo le si analizza statisticamente
+in base ad un modello ipotizzato del consumo di corrente del target.
+
+I passi successivi dipendono da cosa si attacca: tipico esempio è una
+implementazione di AES dove si attacca lo stato dell'algoritmo
+tra AddRoundKey() e SubBytes() corrispondente a `\(State = S_{box}\left[input\^key\right]\)`.
+
+ - [Correlation power Analysys Theory](https://wiki.newae.com/Correlation_Power_Analysis)
  - [Power-Based Side-Channel Attack for AES Key Extraction on the ATMega328 Microcontroller](https://skoppula.github.io/pdfs/sidechannel-report.pdf)
  - [Extracting the Private Key from a TREZOR](http://johoe.mooo.com/trezor-power-analysis/)
 
@@ -683,7 +694,8 @@ misurati e analizzati
 
 I flip-flop ideali si comportano come descritto precedentemente,
 ma ovviamente nella realtà ci sono dei vincoli da rispettare
-per evitare che si comportino secondo specifica.
+per evitare che si comportino secondo specifica. I termini tecnici
+sono **setup time** e **hold time**.
 
 In questa demo verrà usato un clock da 1MHz generato autonomamente
 tramite una FPGA che può (per un singolo ciclo) diventare molto
