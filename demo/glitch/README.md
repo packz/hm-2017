@@ -23,8 +23,10 @@ GND GND 51 41 ...
 V+  3V3 50 40 ...
 ```
 
-**N.B:** il clock deve passare attraverso una resistenza
-per funzionare con l'ATMega
+**N.B:** alimentare la breadboard con i 3V3 dall'FPGA e attaccare e staccare
+completamente l'alimentazione di quest'ultima per resettare la board.
+
+**NON FUNZIONA SEMPRE**
 
 ## Firmware FPGA
 
