@@ -458,6 +458,8 @@ permettono l'apertura di una seriale USB.
  - RTS (opzionale) Request To Send
  - CTS (opzionale) Clear To Send
 
+I Baud rate standard sono 9600, 19200, 38400, 57600, 115200 più altri :P
+
 ---
 
 #### Uart bis
@@ -528,7 +530,21 @@ Questo router ha sia un connettore per la porte seriale (JP2) che un connettore
 per la porta JTAG (JP1) con peraltro la numerazione dei pin errata. Questa porta
 è una porta EJTAG, quindi ricordarsi di mettere un pull-up fra nTRST e VRef.
 
+##### Seriale
 ```
+JP2  
+---  
+RX  1
+GND 2
+3V3 3
+GND 4
+TX  5
+```
+
+##### JTAG
+```
+JP1
+---
 nTRST  1  2 GND
 TDI    3  4 GND
 TDO    5  6 GND
@@ -537,6 +553,11 @@ TCK    9 10 GND
 nSRST 11 12 -key
 DINT  13 14 VCC
 ```
+
+---
+
+#### DSL-302T bis
+
 
 ##### OpenOCD
 
@@ -554,6 +575,13 @@ puoi anche usare gdb-multiarch
 ```
 (gdb) target remote localhost:1234
 ```
+
+o controllare che le istruzioni abbiano senso con radare2:
+
+```
+$ radare2 -a mips -e cfg.bigendian=true -m 0x94028560 -c 'wx f8 ff 40 10 00 00 00 00 74 c2 00 0d 00 00 00 00' malloc://1024
+```
+
 ---
 
 #### PS/2
