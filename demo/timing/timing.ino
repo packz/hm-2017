@@ -19,7 +19,7 @@ void setup() {
     Serial.println("voulez vous inserire le PIN?");
 }
 
-static char buffer[strlen(PASSWORD) + 1];
+static char buffer[PASS_LENGTH + 1];
 
 void check_password(char* buffer) {
         if (strcmp(buffer, PASSWORD) == 0) {
@@ -35,7 +35,7 @@ void loop() {
         buffer[count] = '\0';
 
         Serial.write("> ");
-        Serial.write(buffer, strlen(buffer));
+        Serial.write((uint8_t*)buffer, count);
         Serial.println();
 
         digitalWrite(A5, HIGH);
