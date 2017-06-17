@@ -162,4 +162,4 @@ if __name__ == '__main__':
     #check()
 
     for payload in g_data.keys():
-        export_to_wav('/tmp/scope.%s.wav' % payload, g_data[payload], sample_rate_index)
+        export_to_wav('/tmp/timing-scope.%s.wav' % payload, g_data[payload], sample_rate_index)
